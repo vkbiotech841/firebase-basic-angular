@@ -5,6 +5,12 @@
 export const environment = {
   production: false,
   firebase: {
+    apiKey: "AIzaSyBvkEOFcCghjXD1olCPBgIHg25mCi8V_mU",
+    authDomain: "fir-course-ebb87.firebaseapp.com",
+    projectId: "fir-course-ebb87",
+    storageBucket: "fir-course-ebb87.appspot.com",
+    messagingSenderId: "294507613693",
+    appId: "1:294507613693:web:23bc276209245ccec55d94"
 
   },
   api: {
