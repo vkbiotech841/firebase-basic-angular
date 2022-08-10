@@ -74,4 +74,9 @@ export class CoursesService {
     return from(this.db.doc(`courses/${courseId}`).update(changes));
 
   }
+
+  public deleteCourse(courseId: string) {
+    return from(this.db.doc(`courses/${courseId}`).delete());
+  }
+
 }
