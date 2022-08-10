@@ -69,4 +69,9 @@ export class CoursesService {
       )
 
   }
+
+  public updateCourse(courseId: string, changes: Partial<Course>): Observable<any> {
+    return from(this.db.doc(`courses/${courseId}`).update(changes));
+
+  }
 }

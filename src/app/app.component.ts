@@ -45,8 +45,8 @@ export class AppComponent implements OnInit {
 ////////////////// Exporting emulator database by following command: /////////
 // Keep app running as well as emulator.
 // firebase emulators:export <collectionOrDocumentName>
-// example:  firebase emulators:export sample-courses
+// example:  firebase emulators:export test-data
 
 ////////////////// importing emulator by following command: /////////
 // firebase emulators:start --import <collectionOrDocumentName>
-// example:  firebase emulators:start  --only firestore --import sample-courses
+// example:  firebase emulators:start  --only firestore --import test-data
