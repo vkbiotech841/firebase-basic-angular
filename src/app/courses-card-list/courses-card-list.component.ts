@@ -55,7 +55,7 @@ export class CoursesCardListComponent implements OnInit {
     }
 
     public onDeleteCourse(course: Course): void {
-        this.coursesService.deleteCourse(course.id)
+        this.coursesService.deleteCourseAndLessons(course.id)
             .pipe(
                 tap(() => {
                     console.log("Deleted Course", course);
@@ -69,6 +69,10 @@ export class CoursesCardListComponent implements OnInit {
             )
             .subscribe()
     }
+
+    // Note: Deleting is doc in collection delete that documents but does not delete any nested collection. 
+    // Sometimes, it is necessay to delete nested collection along with document. In this case, deleting a course should also delete its nested lession collects. but it is not happening.
+    // Atomic transactions / Batch writes: In order to remove a document along with its collection, atomic trasactions are required.
 
 }
 

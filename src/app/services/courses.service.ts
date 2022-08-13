@@ -1,9 +1,13 @@
+import firebase from 'firebase/app';
+import { AngularFireStorage } from '@angular/fire/storage';
+import { Lesson } from './../model/lesson';
 import { Course } from './../model/course';
 import { from, Observable } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Injectable } from '@angular/core';
 import { map, concatMap } from 'rxjs/operators';
 import { convertSnaps } from './db-utils';
+import OrderByDirection = firebase.firestore.OrderByDirection;
 
 @Injectable({
   providedIn: 'root'
@@ -77,6 +81,54 @@ export class CoursesService {
 
   public deleteCourse(courseId: string) {
     return from(this.db.doc(`courses/${courseId}`).delete());
+  }
+
+  public deleteCourseAndLessons(courseId: string) {
+    return this.db.collection(`courses/${courseId}/lessons`)
+      .get()
+      .pipe(
+        concatMap(results => {
+          const lessons = convertSnaps<Lesson>(results);
+          const batch = this.db.firestore.batch();
+          const courseRef = this.db.doc(`courses/${courseId}`).ref;
+          batch.delete(courseRef);
+
+          for (let lesson of lessons) {
+            const lessonRef = this.db.doc(`courses/${courseId}/lessons/${lesson.id}`).ref;
+            batch.delete(lessonRef);
+          }
+
+          return from(batch.commit());
+        })
+      )
+
+  }
+
+  public findCourseByUrl(courseUrl: string): Observable<Course | null> {
+    return this.db.collection("courses",
+      ref => ref.where("url", "==", courseUrl))
+      .get()
+      .pipe(
+        map(results => {
+          const courses = convertSnaps<Course>(results);
+          return courses.length == 1 ? courses[0] : null;
+        })
+      )
+
+  }
+
+  public findLessons(courseId: string, sortOrder: OrderByDirection = "asc", pageNumber: number = 0, pageSize: number = 3): Observable<Lesson[]> {
+
+    return this.db.collection(`courses/${courseId}/lessons`,
+      ref => ref.orderBy("seqNo", sortOrder)
+        .limit(pageSize)
+        .startAfter(pageNumber * pageSize)
+    )
+      .get()
+      .pipe(
+        map(results => convertSnaps<Lesson>(results))
+      )
+
   }
 
 }
