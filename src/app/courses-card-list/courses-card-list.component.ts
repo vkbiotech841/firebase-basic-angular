@@ -1,3 +1,4 @@
+import { UserService } from './../services/user.service';
 import { CoursesService } from './../services/courses.service';
 import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { Course } from "../model/course";
@@ -26,7 +27,8 @@ export class CoursesCardListComponent implements OnInit {
     constructor(
         private dialog: MatDialog,
         private router: Router,
-        private coursesService: CoursesService
+        private coursesService: CoursesService,
+        public userService: UserService
     ) {
     }
 

@@ -1,3 +1,4 @@
+import { UserService } from './../services/user.service';
 import { CoursesService } from './../services/courses.service';
 import { Component, OnInit } from '@angular/core';
 import { Course } from '../model/course';
@@ -20,7 +21,8 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private coursesService: CoursesService
+    private coursesService: CoursesService,
+    public userService: UserService
   ) {
 
   }
